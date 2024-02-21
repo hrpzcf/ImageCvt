@@ -1,0 +1,199 @@
+﻿<Window
+    x:Class="WebpCvt.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WebpCvt"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    DataContext="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy}"
+    Icon="\Images\icon.ico"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Title>
+        <MultiBinding StringFormat="{}{0} - {1} by {2} @ {3}">
+            <Binding Source="{x:Static local:AppInfo.Title}" />
+            <Binding Source="{x:Static local:AppInfo.Ver}" />
+            <Binding Source="{x:Static local:AppInfo.Author}" />
+            <Binding Source="{x:Static local:AppInfo.Published}" />
+        </MultiBinding>
+    </Window.Title>
+    <Window.Width>
+        <Binding
+            Mode="TwoWay"
+            Path="MainWidth"
+            UpdateSourceTrigger="PropertyChanged" />
+    </Window.Width>
+    <Window.Height>
+        <Binding
+            Mode="TwoWay"
+            Path="MainHeight"
+            UpdateSourceTrigger="PropertyChanged" />
+    </Window.Height>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <DataGrid
+            Grid.Row="0"
+            Grid.Column="0"
+            AutoGenerateColumns="False"
+            CellStyle="{StaticResource CellStyleNormal}"
+            HeadersVisibility="Column"
+            HorizontalGridLinesBrush="#FF969696"
+            IsReadOnly="True"
+            ItemsSource="{Binding Watchers}"
+            RowStyle="{StaticResource RowStyleNormal}"
+            SelectedItem="{Binding SelectedWatcher}"
+            SelectionMode="Single"
+            VerticalGridLinesBrush="#FF969696">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="是否启用">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding EnableWatcherCmd}"
+                                IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="监视目录">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Padding" Value="10,0" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Padding="8,4"
+                                VerticalAlignment="Center"
+                                Text="{Binding TargetDir, Converter={StaticResource FullPathToDirNameCvt}}"
+                                ToolTip="{Binding TargetDir}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="输出目录">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Padding" Value="10,0" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Padding="8,4"
+                                VerticalAlignment="Center"
+                                Text="{Binding OutputDir, Converter={StaticResource FullPathToDirNameCvt}}"
+                                ToolTip="{Binding OutputDir}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="备注">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Padding" Value="10,0" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Padding="8,4"
+                                VerticalAlignment="Center"
+                                Text="{Binding Remark}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="转换记录">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button
+                                Margin="2"
+                                Command="{Binding OpenLogWindowCmd}"
+                                Content="查看" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="4,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button
+                Grid.Row="0"
+                Padding="16,4"
+                Background="{x:Null}"
+                Command="{Binding AddWhatcherCmd}"
+                Content="新增" />
+            <Button
+                Grid.Row="1"
+                Margin="0,8,0,0"
+                Padding="16,4"
+                Background="{x:Null}"
+                Command="{Binding EditWhatcherCmd}"
+                Content="修改" />
+            <Button
+                Grid.Row="2"
+                Margin="0,8,0,0"
+                Padding="16,4"
+                Background="{x:Null}"
+                Command="{Binding MoveWhatcherUpCmd}"
+                Content="上移" />
+            <Button
+                Grid.Row="3"
+                Margin="0,8,0,0"
+                Padding="16,4"
+                Background="{x:Null}"
+                Command="{Binding MoveWhatcherDownCmd}"
+                Content="下移" />
+            <Button
+                Grid.Row="4"
+                Margin="0,8,0,0"
+                Padding="16,4"
+                Background="{x:Null}"
+                BorderBrush="Red"
+                Command="{Binding RemoveWatcherCmd}"
+                Content="移除" />
+        </Grid>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <CheckBox
+                Grid.Row="0"
+                Grid.Column="0"
+                Padding="4,0,0,0"
+                Content="窗口关闭时最小化到系统托盘"
+                IsChecked="{Binding HideClosingWndToTray}" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="24,0,0,0"
+                VerticalAlignment="Center"
+                Foreground="Gray"
+                Text="提示：程序启动时如果当前目录不存在 webpcvt.dll 模块则会自动释放，模块用于图像转换。"
+                TextTrimming="CharacterEllipsis" />
+        </Grid>
+    </Grid>
+</Window>

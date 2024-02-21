@@ -1,0 +1,165 @@
+﻿<Window
+    x:Class="WebpCvt.WatcherEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WebpCvt"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="添加监视任务"
+    Width="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.EditorWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    Height="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.EditorHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    d:DataContext="{d:DesignInstance Type=local:FileWatcherModel}"
+    SnapsToDevicePixels="True"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Grid Margin="16,8">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer
+            Grid.Row="0"
+            Padding="4"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="要监视的目录：" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="0,2,0,0"
+                    Padding="1,2"
+                    Text="{Binding TargetDir, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="4,2,0,0"
+                    Padding="8,2"
+                    Background="{x:Null}"
+                    Command="{Binding SelectTargetDirCmd}"
+                    Content="..." />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="0,8,0,0"
+                    Text="文件输出目录：" />
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,2,0,0">
+                    <TextBlock
+                        Margin="4,0"
+                        VerticalAlignment="Center"
+                        Foreground="#A0808080"
+                        Text="此处可以留空，留空代表转换生成的文件保存到原文件所在目录"
+                        Visibility="{Binding ElementName=textBoxOutputDir, Path=Text, Converter={StaticResource PlaceHolderTextVisibilityCvt}}" />
+                    <TextBox
+                        x:Name="textBoxOutputDir"
+                        Padding="1,2"
+                        Background="Transparent"
+                        Text="{Binding OutputDir, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                </Grid>
+                <Button
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="4,2,0,0"
+                    Padding="8,2"
+                    Background="{x:Null}"
+                    Command="{Binding SelectOutputDirCmd}"
+                    Content="..." />
+                <StackPanel
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,8,0,0"
+                    Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="输出格式：" />
+                    <RadioButton
+                        x:Name="jpegRadioButton"
+                        Padding="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="JPEG"
+                        IsChecked="{Binding OutType, Converter={StaticResource OutTypeJpegToTureCvt}}" />
+                    <TextBlock VerticalAlignment="Center" Text=" - 图像质量" />
+                    <TextBox
+                        MinWidth="30"
+                        Margin="2,0,0,0"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        IsEnabled="{Binding ElementName=jpegRadioButton, Path=IsChecked}"
+                        MaxLines="1"
+                        Text="{Binding JpegQuality, UpdateSourceTrigger=LostFocus}" />
+                    <TextBlock
+                        Margin="2,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="%" />
+                    <RadioButton
+                        Margin="20,0,0,0"
+                        Padding="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="PNG"
+                        IsChecked="{Binding OutType, Converter={StaticResource OutTypePngToTureCvt}}" />
+                    <RadioButton
+                        Margin="20,0,0,0"
+                        Padding="4,0,0,0"
+                        VerticalAlignment="Center"
+                        Content="BMP"
+                        IsChecked="{Binding OutType, Converter={StaticResource OutTypeBmpToTureCvt}}" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="0,8,0,0"
+                    Text="备注：" />
+                <TextBox
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,2,0,0"
+                    Padding="1,2"
+                    AcceptsReturn="True"
+                    Text="{Binding Remark, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+            </Grid>
+        </ScrollViewer>
+        <Grid
+            Grid.Row="1"
+            Margin="0,8,0,0"
+            VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Padding="16,4"
+                HorizontalAlignment="Right"
+                Background="{x:Null}"
+                Click="OnButtonConfirmClick"
+                Content="确定" />
+            <Button
+                Grid.Column="1"
+                Margin="8,0,0,0"
+                Padding="16,4"
+                HorizontalAlignment="Right"
+                Background="{x:Null}"
+                BorderBrush="Red"
+                Click="OnButtonCancelClick"
+                Content="取消" />
+        </Grid>
+    </Grid>
+</Window>
