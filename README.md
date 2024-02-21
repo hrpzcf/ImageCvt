@@ -22,4 +22,6 @@
 
 ## 软件截图
 
-![截图](./Screenshots/主窗口.png)
+![截图1](./Screenshots/主窗口.png)
+
+![截图2](./Screenshots/添加任务.png)
