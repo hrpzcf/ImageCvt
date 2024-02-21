@@ -63,7 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commons\Enumerations.cs" />
+    <Compile Include="Others\Enumerations.cs" />
     <Compile Include="Views\WatcherLogWnd.xaml.cs">
       <DependentUpon>WatcherLogWnd.xaml</DependentUpon>
     </Compile>
@@ -92,11 +92,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppInfo.cs" />
-    <Compile Include="Commons\CommonExt.cs" />
-    <Compile Include="Commons\RelayCommand.cs" />
-    <Compile Include="Commons\ConfigHelper.cs" />
-    <Compile Include="Commons\ParamPackage.cs" />
-    <Compile Include="Commons\Converters.cs" />
+    <Compile Include="Others\CommonExt.cs" />
+    <Compile Include="Others\RelayCommand.cs" />
+    <Compile Include="Others\ConfigHelper.cs" />
+    <Compile Include="Others\ParamPackage.cs" />
+    <Compile Include="Others\Converters.cs" />
     <Compile Include="Models\FileWatcherModel.cs" />
     <Compile Include="Models\ProxyOfMainModel.cs" />
     <Compile Include="Models\MainWindowModel.cs" />
