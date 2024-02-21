@@ -8,12 +8,12 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("WebpCvt")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("用于监视目录，自动把所监视的目录里新增的 webp 文件转换为 jpeg/png/bmp 文件")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("hrpzcf")]
 [assembly: AssemblyProduct("WebpCvt")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © 2024 hrpzcf")]
+[assembly: AssemblyTrademark("WebpCvt")]
 [assembly: AssemblyCulture("")]
 
 // 将 ComVisible 设置为 false 会使此程序集中的类型
