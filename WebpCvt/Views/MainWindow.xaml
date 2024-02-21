@@ -183,6 +183,7 @@
             <CheckBox
                 Grid.Row="0"
                 Grid.Column="0"
+                Margin="-1,0,0,0"
                 Padding="4,0,0,0"
                 Content="窗口关闭时最小化到系统托盘"
                 IsChecked="{Binding HideClosingWndToTray}" />
@@ -192,7 +193,7 @@
                 Margin="24,0,0,0"
                 VerticalAlignment="Center"
                 Foreground="Gray"
-                Text="提示：程序启动时如果当前目录不存在 webpcvt.dll 模块则会自动释放，模块用于图像转换。"
+                Text="提示：启动时如果当前目录不存在 webpcvt.dll 模块则自动创建，模块用于转换图像格式。"
                 TextTrimming="CharacterEllipsis" />
         </Grid>
     </Grid>
