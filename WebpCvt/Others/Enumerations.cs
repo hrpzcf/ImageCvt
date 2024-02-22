@@ -1,9 +1,8 @@
 ﻿namespace WebpCvt
 {
-    public enum OutType
+    public enum OutFmt
     {
         JPG,
         PNG,
-        BMP,
     }
 }

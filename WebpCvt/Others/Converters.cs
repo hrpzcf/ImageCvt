@@ -170,12 +170,12 @@ namespace WebpCvt
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is OutType outType && outType == OutType.PNG;
+            return value is OutFmt outType && outType == OutFmt.PNG;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool boolean && boolean ? OutType.PNG : default(OutType);
+            return value is bool boolean && boolean ? OutFmt.PNG : default(OutFmt);
         }
     }
 
@@ -183,25 +183,12 @@ namespace WebpCvt
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is OutType outType && outType == OutType.JPG;
+            return value is OutFmt outType && outType == OutFmt.JPG;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool boolean && boolean ? OutType.JPG : default(OutType);
-        }
-    }
-
-    internal class OutTypeBmpToTureCvt : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value is OutType outType && outType == OutType.BMP;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value is bool boolean && boolean ? OutType.BMP : default(OutType);
+            return value is bool boolean && boolean ? OutFmt.JPG : default(OutFmt);
         }
     }
 }

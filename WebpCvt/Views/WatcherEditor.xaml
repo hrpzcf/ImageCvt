@@ -94,7 +94,7 @@
                         Padding="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="JPEG"
-                        IsChecked="{Binding OutType, Converter={StaticResource OutTypeJpegToTureCvt}}" />
+                        IsChecked="{Binding OutFormat, Converter={StaticResource OutTypeJpegToTureCvt}}" />
                     <TextBlock VerticalAlignment="Center" Text=" - 图像质量" />
                     <TextBox
                         MinWidth="30"
@@ -113,13 +113,7 @@
                         Padding="4,0,0,0"
                         VerticalAlignment="Center"
                         Content="PNG"
-                        IsChecked="{Binding OutType, Converter={StaticResource OutTypePngToTureCvt}}" />
-                    <RadioButton
-                        Margin="20,0,0,0"
-                        Padding="4,0,0,0"
-                        VerticalAlignment="Center"
-                        Content="BMP"
-                        IsChecked="{Binding OutType, Converter={StaticResource OutTypeBmpToTureCvt}}" />
+                        IsChecked="{Binding OutFormat, Converter={StaticResource OutTypePngToTureCvt}}" />
                 </StackPanel>
                 <TextBlock
                     Grid.Row="5"

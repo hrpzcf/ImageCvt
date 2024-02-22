@@ -10,7 +10,6 @@
     <local:GetFirstLineOfStringCvt x:Key="GetFirstLineOfStringCvt" />
     <local:GetDifferenceBetweenTwoNumbersCvt x:Key="GetDifferenceBetweenTwoNumbersCvt" />
     <local:BoolToTextBlockStrikeThroughCvt x:Key="BoolToTextBlockStrikeThroughCvt" />
-    <local:OutTypeBmpToTureCvt x:Key="OutTypeBmpToTureCvt" />
-    <local:OutTypeJpegToTureCvt x:Key="OutTypeJpegToTureCvt" />
     <local:OutTypePngToTureCvt x:Key="OutTypePngToTureCvt" />
+    <local:OutTypeJpegToTureCvt x:Key="OutTypeJpegToTureCvt" />
 </ResourceDictionary>

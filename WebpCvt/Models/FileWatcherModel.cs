@@ -19,7 +19,7 @@ namespace WebpCvt
         private string remark;
         private string targetDir;
         private string outputDir;
-        private OutType outType;
+        private OutFmt outType;
         private const string supportedExt = ".webp";
         private readonly Timer fileChangedTimer;
         private List<ParamPackage> packagesForTimer;
@@ -38,10 +38,7 @@ namespace WebpCvt
         private RelayCommand deleteConvertedFilesCmd;
 
         [DllImport(ConfigHelper.LibWebpCvt, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int WebpConvertTo(string inFile, string outFile, int outFormat, ref int reason);
-
-        [DllImport(ConfigHelper.LibWebpCvt, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int WebpConvertToJpeg(string in_file, string out_file, int quality, ref int reason);
+        private static extern int WebpConvertTo(string inFile, string outFile, int outFormat, int quality, ref int error);
 
         public FileWatcherModel()
         {
@@ -58,20 +55,14 @@ namespace WebpCvt
         private static string[] Reasons { get; } = new string[]
         {
             string.Empty,
-            "输出格式参数不正确",
             "输入或输出文件路径为空",
-            "初始化 Webp 解码配置失败",
-            "读取输入文件失败",
-            "获取输入文件特征失败",
-            "解码输入文件失败",
-            "输出格式不匹配可选的格式",
-            "保存输出文件失败",
-            "输入或输出文件路径为空",
-            "输出 JPEG 图像质量值不正确",
+            "输出文件格式参数不正确",
+            "初始化 WEBP 解码配置失败",
+            "无法打开输入文件",
             "读取输入文件失败",
             "解码输入文件失败",
-            "创建输出文件失败",
-            "生成 JPEG 文件过程失败",
+            "无法创建输出文件",
+            "生成输出文件过程出错",
         };
 
         [XmlIgnore]
@@ -125,7 +116,7 @@ namespace WebpCvt
             }
         }
 
-        public OutType OutType
+        public OutFmt OutFormat
         {
             get => this.outType;
             set => this.SetPropNotify(ref this.outType, value);
@@ -154,7 +145,7 @@ namespace WebpCvt
                 Remark = this.Remark,
                 TargetDir = this.TargetDir,
                 OutputDir = this.OutputDir,
-                OutType = this.OutType,
+                OutFormat = this.OutFormat,
                 JpegQuality = this.JpegQuality,
                 ProcessedWebpFiles = this.ProcessedWebpFiles,
                 IsEnabled = false,
@@ -201,7 +192,7 @@ namespace WebpCvt
                     {
                         package.TargetDir = this.TargetDir;
                         package.OutputDir = this.OutputDir;
-                        package.OutType = this.OutType;
+                        package.OutFormat = this.OutFormat;
                         package.JpegQuality = this.JpegQuality;
                         this.paramPackageCollection.Add(package);
                     }
@@ -273,24 +264,19 @@ namespace WebpCvt
             return default(string);
         }
 
-        private static bool ConvertToOutType(ParamPackage paramPackage)
+        private static bool ConvertToFormat(ParamPackage paramPackage)
         {
             try
             {
                 string newExt;
-                int intFormat = 0;
-                switch (paramPackage.OutType)
+                switch (paramPackage.OutFormat)
                 {
                     default:
-                    case OutType.JPG:
+                    case OutFmt.JPG:
                         newExt = ".jpg";
                         break;
-                    case OutType.PNG:
+                    case OutFmt.PNG:
                         newExt = ".png";
-                        break;
-                    case OutType.BMP:
-                        intFormat = 4;
-                        newExt = ".bmp";
                         break;
                 }
                 string nameNoExt = Path.GetFileNameWithoutExtension(paramPackage.Name);
@@ -307,23 +293,18 @@ namespace WebpCvt
                         $"{nameNoExt}{newExt}" : $"{nameNoExt}_{duplicate}{newExt}";
                     paramPackage.NewFullPath = Path.Combine(outdir, paramPackage.NewName);
                 } while (File.Exists(paramPackage.NewFullPath));
-                int reason = 0;
-                if (paramPackage.OutType != OutType.JPG)
-                {
-                    paramPackage.Result = WebpConvertTo(paramPackage.FullPath, paramPackage.NewFullPath,
-                        intFormat, ref reason) != 0;
-                }
-                else
-                {
-                    paramPackage.Result = WebpConvertToJpeg(paramPackage.FullPath, paramPackage.NewFullPath,
-                        paramPackage.JpegQuality, ref reason) != 0;
-                }
+                int error = 0;
+                paramPackage.Result = WebpConvertTo(paramPackage.FullPath, paramPackage.NewFullPath,
+                    (int)paramPackage.OutFormat, paramPackage.JpegQuality, ref error) != 0;
                 if (!paramPackage.Result)
                 {
                     try
                     {
-                        File.Delete(paramPackage.NewFullPath);
-                        paramPackage.ReasonForFailure = Reasons[reason];
+                        if (File.Exists(paramPackage.NewFullPath))
+                        {
+                            File.Delete(paramPackage.NewFullPath);
+                        }
+                        paramPackage.ReasonForFailure = Reasons[error];
                     }
                     catch (Exception)
                     {
@@ -347,7 +328,7 @@ namespace WebpCvt
                 {
                     foreach (ParamPackage param in paramPackageCollection.GetConsumingEnumerable())
                     {
-                        bool succeeded = ConvertToOutType(param);
+                        bool succeeded = ConvertToFormat(param);
                         param.FinishTime = DateTime.Now;
                         Application.Current.Dispatcher.Invoke(() =>
                         {

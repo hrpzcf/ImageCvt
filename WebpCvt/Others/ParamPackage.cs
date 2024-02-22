@@ -30,7 +30,7 @@ namespace WebpCvt
 
         public string NewFullPath { get; set; }
 
-        public OutType OutType { get; set; }
+        public OutFmt OutFormat { get; set; }
 
         public int JpegQuality { get; set; } = 80;
 
