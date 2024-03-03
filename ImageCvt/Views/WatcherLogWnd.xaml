@@ -1,0 +1,170 @@
+﻿<Window
+    x:Class="ImageCvt.WatcherLogWnd"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ImageCvt"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="转换记录"
+    Width="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.LogWndWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    Height="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.LogWndHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    d:DataContext="{d:DesignInstance Type=local:FileWatcherModel}"
+    SnapsToDevicePixels="True"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <DataGrid
+            Grid.Row="0"
+            Grid.Column="0"
+            AutoGenerateColumns="False"
+            CellStyle="{StaticResource CellStyleNormal}"
+            HeadersVisibility="Column"
+            HorizontalGridLinesBrush="#FF969696"
+            IsReadOnly="True"
+            ItemsSource="{Binding ProcessedWebpFiles}"
+            RowStyle="{StaticResource RowStyleNormal}"
+            SelectedItem="{Binding SelectedParamPackage}"
+            SelectionMode="Single"
+            VerticalGridLinesBrush="#FF969696">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="时间">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Padding="4" Text="{Binding FinishTime, Converter={StaticResource DateTimeToStringCvt}}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="输入与输出">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Margin="4,2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="0,0,0,0"
+                                    Text="原文件：" />
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,0,0,0"
+                                    Text="{Binding FullPath}"
+                                    TextDecorations="{Binding OriginFileDeleted, Converter={StaticResource BoolToTextBlockStrikeThroughCvt}}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="0,2,0,0"
+                                    Text="新文件：" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,2,0,0"
+                                    Text="{Binding NewFullPath}" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="转换结果">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label
+                                Padding="4"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Background="{Binding Result, Converter={StaticResource LogResultToBackgroundCvt}}"
+                                Content="{Binding Result, Converter={StaticResource LogResultToStringCvt}}"
+                                Foreground="White" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*" Header="输出信息">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Padding="4"
+                                Text="{Binding ReasonForFailure, Converter={StaticResource GetFirstLineOfStringCvt}}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="NoWrap"
+                                ToolTip="{Binding ReasonForFailure}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,4,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Column="0"
+                VerticalAlignment="Center"
+                Text="总数：" />
+            <TextBlock
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Text="{Binding ProcessedWebpFiles.Count}" />
+            <TextBlock
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Text="成功：" />
+            <TextBlock
+                Grid.Column="3"
+                VerticalAlignment="Center"
+                Text="{Binding SucceededCount}" />
+            <TextBlock
+                Grid.Column="4"
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Text="失败：" />
+            <TextBlock Grid.Column="5" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource GetDifferenceBetweenTwoNumbersCvt}">
+                        <Binding Path="SucceededCount" />
+                        <Binding Path="ProcessedWebpFiles.Count" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <Button
+                Grid.Column="7"
+                Padding="8,4"
+                Background="{x:Null}"
+                BorderBrush="Red"
+                Command="{Binding DeleteConvertedFilesCmd}"
+                Content="删除转换成功的记录的原文件" />
+            <Button
+                Grid.Column="8"
+                Margin="16,0,0,0"
+                Padding="8,4"
+                Background="{x:Null}"
+                Command="{Binding ClearLogItemsCmd}"
+                Content="清空记录" />
+        </Grid>
+    </Grid>
+</Window>

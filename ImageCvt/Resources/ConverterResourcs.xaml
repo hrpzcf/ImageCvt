@@ -1,0 +1,22 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ImageCvt">
+    <local:FullPathToDirNameCvt x:Key="FullPathToDirNameCvt" />
+    <local:PlaceHolderTextVisibilityCvt x:Key="PlaceHolderTextVisibilityCvt" />
+    <local:DateTimeToStringCvt x:Key="DateTimeToStringCvt" />
+    <local:LogResultToStringCvt x:Key="LogResultToStringCvt" />
+    <local:LogResultToBackgroundCvt x:Key="LogResultToBackgroundCvt" />
+    <local:GetFirstLineOfStringCvt x:Key="GetFirstLineOfStringCvt" />
+    <local:GetDifferenceBetweenTwoNumbersCvt x:Key="GetDifferenceBetweenTwoNumbersCvt" />
+    <local:BoolToTextBlockStrikeThroughCvt x:Key="BoolToTextBlockStrikeThroughCvt" />
+    <local:SpecifiedOutFormatToTureCvt x:Key="OutFormatJpgToTureCvt" Format="JPG" />
+    <local:SpecifiedOutFormatToTureCvt x:Key="OutFormatPngToTureCvt" Format="PNG" />
+    <local:SpecifiedOutFormatToTureCvt x:Key="OutFormatWebpToTureCvt" Format="WEBP" />
+    <local:SpecifiedOutFormatToTureCvt x:Key="OutFormatGifToTureCvt" Format="GIF" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="SizedCompModeToTrueCvt" Mode="Sized" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="QualityCompModeToTrueCvt" Mode="Quality" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="LosslessFastCompModeToTrueCvt" Mode="LosslessFast" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="LosslessStandardCompModeToTrueCvt" Mode="LosslessStandard" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="LosslessSlowCompModeToTrueCvt" Mode="LosslessSlow" />
+</ResourceDictionary>
