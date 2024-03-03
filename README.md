@@ -1,6 +1,6 @@
 <div align="center">
 
-## ImageCvt / Webp 图像转换
+## ImageCvt
 
 [![GitHub stars](https://img.shields.io/github/stars/hrpzcf/ImageCvt?style=flat)](https://github.com/hrpzcf/ImageCvt/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/hrpzcf/ImageCvt?style=flat)](https://github.com/hrpzcf/ImageCvt/network)
@@ -12,9 +12,9 @@
 
 <br/>
 
-## 软件说明
+## 功能说明
 
-用于监视目录，自动把所监视的目录里新增的 webp 文件转换为 jpeg/png 文件。
+监视目录并自动把目录里新增或被重命名为目标格式的图像转换为指定格式
 
 项目的图像转换模块 `ImageCvt/Library/libimgcvt.dll` 来自 [libimgcvt](https://github.com/hrpzcf/libimgcvt)，提供 JPEG/PNG/WEBP 图像之间互转的功能，详情请点击前往查看。
 
@@ -25,3 +25,5 @@
 ![截图1](./Screenshots/主窗口.png)
 
 ![截图2](./Screenshots/添加任务.png)
+
+![截图3](./Screenshots/转换记录.png)
