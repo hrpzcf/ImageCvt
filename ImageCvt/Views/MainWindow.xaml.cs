@@ -73,9 +73,15 @@ namespace ImageCvt
             this.trayIcon?.Dispose();
         }
 
-        private void MainWindowLoaded(object sender, RoutedEventArgs e)
+        private void MainWindowClosed(object sender, EventArgs e)
         {
-            this.SetupNotifyIcon();
+            this.RemoveNotifyIcon();
+            foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)
+            {
+                model.NotStoppedBeforeExiting = model.IsEnabled;
+                model.EnableWatcher(false);
+                model.DisposeFileWatcherModel();
+            }
         }
 
         private void MainWindowClosing(object sender, CancelEventArgs e)
@@ -87,13 +93,16 @@ namespace ImageCvt
             }
         }
 
-        private void MainWindowClosed(object sender, EventArgs e)
+        private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            this.RemoveNotifyIcon();
+            this.SetupNotifyIcon();
             foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)
             {
-                model.EnableWatcher(false);
-                model.DisposeFileWatcherModel();
+                if (model.NotStoppedBeforeExiting && ConfigHelper.Current.MainModelProxy.AutoStartTasksNotStopped)
+                {
+                    model.EnableWatcher(true);
+                }
+                model.NotStoppedBeforeExiting = false;
             }
         }
     }

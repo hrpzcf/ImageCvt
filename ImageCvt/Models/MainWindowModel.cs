@@ -14,6 +14,7 @@ namespace ImageCvt
         private double editorHeight = 300.0;
         private double logWndWidth = 600.0;
         private double logWndHeight = 700.0;
+        private bool autoStartTasksNotStopped = false;
         private bool hideToTrayWhenWindowClosed = true;
         private FileWatcherModel selectedWatcher;
         private RelayCommand addWhatcherCmd;
@@ -64,6 +65,12 @@ namespace ImageCvt
         {
             get => this.hideToTrayWhenWindowClosed;
             set => this.SetPropNotify(ref this.hideToTrayWhenWindowClosed, value);
+        }
+
+        public bool AutoStartTasksNotStopped
+        {
+            get => this.autoStartTasksNotStopped;
+            set => this.SetPropNotify(ref this.autoStartTasksNotStopped, value);
         }
 
         [XmlIgnore]

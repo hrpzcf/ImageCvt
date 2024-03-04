@@ -165,6 +165,8 @@ namespace ImageCvt
             set => this.SetPropNotify(ref this.compLevel, value);
         }
 
+        public bool NotStoppedBeforeExiting { get; set; }
+
         [XmlIgnore]
         public ParamPackage SelectedParamPackage
         {

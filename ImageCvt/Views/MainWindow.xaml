@@ -176,6 +176,10 @@
             Grid.Column="0"
             Grid.ColumnSpan="2"
             Margin="0,8,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
@@ -187,13 +191,21 @@
                 Padding="4,0,0,0"
                 Content="窗口关闭时最小化到系统托盘"
                 IsChecked="{Binding HideClosingWndToTray}" />
-            <TextBlock
+            <CheckBox
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="24,0,0,0"
+                Padding="4,0,0,0"
+                Content="软件启动后，自动开启上次退出前未停止的任务"
+                IsChecked="{Binding AutoStartTasksNotStopped}" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,4,0,0"
                 VerticalAlignment="Center"
                 Foreground="Gray"
-                Text="{Binding Source={x:Static local:ConfigHelper.LibImgCvt}, StringFormat=提示：启动时如果当前目录不存在 {0} 模块则自动创建，模块用于转换图像格式。}"
+                Text="{Binding Source={x:Static local:ConfigHelper.LibImgCvt}, StringFormat=提示：启动时如果当前目录不存在 {0} 模块则自动创建，它提供 JPEG/PNG/WEBP 之间的格式转换功能。}"
                 TextTrimming="CharacterEllipsis" />
         </Grid>
     </Grid>
