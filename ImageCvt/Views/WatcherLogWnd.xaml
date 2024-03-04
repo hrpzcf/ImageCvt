@@ -29,7 +29,7 @@
             HeadersVisibility="Column"
             HorizontalGridLinesBrush="#FF969696"
             IsReadOnly="True"
-            ItemsSource="{Binding ProcessedWebpFiles}"
+            ItemsSource="{Binding ProcessedPictures}"
             RowStyle="{StaticResource RowStyleNormal}"
             SelectedItem="{Binding SelectedParamPackage}"
             SelectionMode="Single"
@@ -128,7 +128,7 @@
             <TextBlock
                 Grid.Column="1"
                 VerticalAlignment="Center"
-                Text="{Binding ProcessedWebpFiles.Count}" />
+                Text="{Binding ProcessedPictures.Count}" />
             <TextBlock
                 Grid.Column="2"
                 Margin="8,0,0,0"
@@ -147,7 +147,7 @@
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource GetDifferenceBetweenTwoNumbersCvt}">
                         <Binding Path="SucceededCount" />
-                        <Binding Path="ProcessedWebpFiles.Count" />
+                        <Binding Path="ProcessedPictures.Count" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

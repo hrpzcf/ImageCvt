@@ -31,7 +31,7 @@ namespace ImageCvt
         private readonly List<ParamPackage> packagesForTimer;
         private readonly object packagesForTimerLock = new object();
         private readonly FileSystemWatcher watcher = new FileSystemWatcher();
-        private ObservableCollection<ParamPackage> processedWebpFiles =
+        private ObservableCollection<ParamPackage> processedPictures =
             new ObservableCollection<ParamPackage>();
         private BlockingCollection<ParamPackage> paramPackageCollection;
         private int succeededCount = 0;
@@ -177,8 +177,8 @@ namespace ImageCvt
         [XmlIgnore]
         public ObservableCollection<ParamPackage> ProcessedPictures
         {
-            get => this.processedWebpFiles;
-            set => this.processedWebpFiles = value;
+            get => this.processedPictures;
+            set => this.processedPictures = value;
         }
 
         public FileWatcherModel CopyModel()
