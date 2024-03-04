@@ -148,7 +148,7 @@
                 Padding="16,4"
                 Background="{x:Null}"
                 Command="{Binding EditWhatcherCmd}"
-                Content="修改" />
+                Content="编辑" />
             <Button
                 Grid.Row="2"
                 Margin="0,8,0,0"

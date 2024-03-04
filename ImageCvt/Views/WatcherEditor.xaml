@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ImageCvt"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="添加监视任务"
+    Title="添加或编辑监视任务"
     Width="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.EditorWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
     Height="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy.EditorHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
     d:DataContext="{d:DesignInstance Type=local:FileWatcherModel}"
@@ -223,15 +223,15 @@
                                     </StackPanel>
                                     <RadioButton
                                         Margin="0,2,0,0"
-                                        Content="无损：弱压缩，速度最快"
+                                        Content="无损：低压缩，速度最快"
                                         IsChecked="{Binding CompLevel, Converter={StaticResource LosslessFastCompModeToTrueCvt}}" />
                                     <RadioButton
                                         Margin="0,2,0,0"
-                                        Content="无损：标准压缩，速度适中"
+                                        Content="无损：典型压缩，速度适中"
                                         IsChecked="{Binding CompLevel, Converter={StaticResource LosslessStandardCompModeToTrueCvt}}" />
                                     <RadioButton
                                         Margin="0,2,0,0"
-                                        Content="无损：强压缩，速度最慢"
+                                        Content="无损：高压缩，速度最慢"
                                         IsChecked="{Binding CompLevel, Converter={StaticResource LosslessSlowCompModeToTrueCvt}}" />
                                 </StackPanel>
                             </StackPanel>

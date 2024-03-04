@@ -13,7 +13,7 @@
         Sized = -2,
         Quality = -1,
         LosslessFast = 0,
-        LosslessStandard = 1,
+        LosslessTypical = 1,
         LosslessSlow = 2,
     }
 }

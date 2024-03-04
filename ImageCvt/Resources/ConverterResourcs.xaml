@@ -17,7 +17,7 @@
     <local:SpecifiedCompModeToTrueCvt x:Key="SizedCompModeToTrueCvt" Mode="Sized" />
     <local:SpecifiedCompModeToTrueCvt x:Key="QualityCompModeToTrueCvt" Mode="Quality" />
     <local:SpecifiedCompModeToTrueCvt x:Key="LosslessFastCompModeToTrueCvt" Mode="LosslessFast" />
-    <local:SpecifiedCompModeToTrueCvt x:Key="LosslessStandardCompModeToTrueCvt" Mode="LosslessStandard" />
+    <local:SpecifiedCompModeToTrueCvt x:Key="LosslessStandardCompModeToTrueCvt" Mode="LosslessTypical" />
     <local:SpecifiedCompModeToTrueCvt x:Key="LosslessSlowCompModeToTrueCvt" Mode="LosslessSlow" />
     <local:BoolToMainWindowVisibilityCvt x:Key="BoolToMainWindowVisibilityCvt" />
 </ResourceDictionary>
