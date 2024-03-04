@@ -39,7 +39,7 @@ namespace ImageCvt
 
         public FileFmt InFormat { get; set; }
 
-        public int Quality { get; set; } = 80;
+        public int Quality { get; set; }
 
         public FileFmt OutFormat { get; set; }
 

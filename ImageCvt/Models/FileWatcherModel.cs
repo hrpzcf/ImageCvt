@@ -20,7 +20,7 @@ namespace ImageCvt
         private string remark = string.Empty;
         private string targetDir = string.Empty;
         private string outputDir = string.Empty;
-        private int quality = 80;
+        private int quality = 90;
         private FileFmt outFormat = FileFmt.JPG;
         private CompMode compLevel = CompMode.Quality;
         private bool autoDeleteOriginOnSucceeded = false;
@@ -445,20 +445,22 @@ namespace ImageCvt
                 paramPackage.Result = ConvertImageFormat(paramPackage.FullPath, paramPackage.InFormat,
                     paramPackage.NewFullPath, paramPackage.OutFormat, fit_dyn: 0, paramPackage.CompLevel,
                     paramPackage.Quality, error) != 0;
-                paramPackage.ReasonForFailure = Encoding.UTF8.GetString(error);
                 if (!paramPackage.Result)
                 {
-                    try
+                    if (File.Exists(paramPackage.NewFullPath))
                     {
-                        if (File.Exists(paramPackage.NewFullPath))
+                        try
                         {
                             File.Delete(paramPackage.NewFullPath);
                         }
+                        catch (Exception) { }
                     }
-                    catch (Exception)
+                    try
                     {
+                        paramPackage.ReasonForFailure = Encoding.UTF8.GetString(error);
                     }
-                    paramPackage.NewName = paramPackage.NewFullPath = string.Empty;
+                    catch (Exception) { }
+                    paramPackage.NewName = paramPackage.NewFullPath = null;
                 }
             }
             catch (Exception ex)
