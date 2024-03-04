@@ -36,6 +36,7 @@ namespace ImageCvt
             new ObservableCollection<ParamPackage>();
         private BlockingCollection<ParamPackage> paramPackageCollection;
         private int succeededCount = 0;
+        private string beingProcessedName = null;
         private ParamPackage selectedParamPackage = null;
         private RelayCommand enableWatcherCmd;
         private RelayCommand openLogWindowCmd;
@@ -180,6 +181,13 @@ namespace ImageCvt
         {
             get => this.autoDeleteOriginOnSucceeded;
             set => this.SetPropNotify(ref this.autoDeleteOriginOnSucceeded, value);
+        }
+
+        [XmlIgnore]
+        public string BeingProcessedName
+        {
+            get => this.beingProcessedName;
+            set => this.SetPropNotify(ref this.beingProcessedName, value);
         }
 
         [XmlIgnore]
@@ -469,10 +477,15 @@ namespace ImageCvt
                 {
                     foreach (ParamPackage param in paramPackageCollection.GetConsumingEnumerable())
                     {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            this.BeingProcessedName = param.Name;
+                        });
                         bool succeeded = this.ConvertToFormat(param);
                         param.FinishTime = DateTime.Now;
-                        void AddProcessedPicture()
+                        void PictureProcessed()
                         {
+                            this.BeingProcessedName = null;
                             this.ProcessedPictures.Add(param);
                             if (succeeded)
                             {
@@ -488,7 +501,7 @@ namespace ImageCvt
                                 ++this.SucceededCount;
                             }
                         };
-                        Application.Current.Dispatcher.Invoke(AddProcessedPicture);
+                        Application.Current.Dispatcher.Invoke(PictureProcessed);
                     }
                 }
                 catch (ObjectDisposedException)
