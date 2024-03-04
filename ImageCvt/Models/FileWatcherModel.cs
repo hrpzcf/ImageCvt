@@ -36,6 +36,7 @@ namespace ImageCvt
             new ObservableCollection<ParamPackage>();
         private BlockingCollection<ParamPackage> paramPackageCollection;
         private int succeededCount = 0;
+        private Window hostWindow = null;
         private string beingProcessedName = null;
         private ParamPackage selectedParamPackage = null;
         private RelayCommand enableWatcherCmd;
@@ -69,7 +70,11 @@ namespace ImageCvt
         }
 
         [XmlIgnore]
-        public Window HostWindow { get; set; }
+        public Window HostWindow
+        {
+            get => this.hostWindow ?? MainWindow.This;
+            set => this.hostWindow = value;
+        }
 
         [XmlIgnore]
         public bool IsEnabled
@@ -363,7 +368,7 @@ namespace ImageCvt
             this.EnableWatcher(false);
             Application.Current.Dispatcher.Invoke(() =>
             {
-                MessageBox.Show(MainWindow.This, $"监视任务{this.Remark}出现异常：{e.GetException().Message}",
+                MessageBox.Show(this.HostWindow, $"监视任务{this.Remark}出现异常：{e.GetException().Message}",
                     "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             });
         }
@@ -543,7 +548,7 @@ namespace ImageCvt
                 else
                 {
                     this.IsEnabled = false;
-                    MessageBox.Show(MainWindow.This, reasonForFailure, "提示", MessageBoxButton.OK,
+                    MessageBox.Show(this.HostWindow, reasonForFailure, "提示", MessageBoxButton.OK,
                         MessageBoxImage.Warning);
                 }
             }
@@ -668,7 +673,7 @@ namespace ImageCvt
 
         private void DeleteConvertedFilesAction(object param)
         {
-            if (MessageBox.Show(MainWindow.This, "确定要删除所有已经转换成功的原文件吗？", "提示",
+            if (MessageBox.Show(this.HostWindow, "确定要删除所有已经转换成功的原文件吗？", "提示",
                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 // 对 ProcessedPictures 的操作都在主线程，不用加锁
@@ -683,7 +688,7 @@ namespace ImageCvt
                     {
                     }
                 }
-                MessageBox.Show(MainWindow.This, "转换成功的原文件已经被删除！", "提示", MessageBoxButton.OK,
+                MessageBox.Show(this.HostWindow, "转换成功的原文件已经被删除！", "提示", MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
         }

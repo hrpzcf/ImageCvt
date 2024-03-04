@@ -32,15 +32,16 @@ namespace ImageCvt
 
         private void OnButtonConfirmClick(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.viewModel.TargetDir) && Path.IsPathRooted(this.viewModel.TargetDir))
+            if (!string.IsNullOrEmpty(this.viewModel.TargetDir) &&
+                Path.IsPathRooted(this.viewModel.TargetDir))
             {
                 this.Close();
                 this.callback(this.viewModel);
             }
             else
             {
-                MessageBox.Show(MainWindow.This, "请使用完整路径来表示要监视的目录！", "提示",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(this, "请使用完整路径来表示要监视的目录！", "提示", MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
     }
