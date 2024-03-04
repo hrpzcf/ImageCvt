@@ -195,4 +195,17 @@ namespace ImageCvt
             return value is bool boolean && boolean ? this.Mode : default(CompMode);
         }
     }
+
+    internal class BoolToMainWindowVisibilityCvt : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is bool boolean && boolean ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

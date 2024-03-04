@@ -110,22 +110,22 @@
                                 Margin="0,2,0,0"
                                 Padding="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Content="WEBP ( .webp )"
-                                IsChecked="{Binding WatchWebp}" />
+                                Content="PNG ( .png )"
+                                IsChecked="{Binding WatchPng}" />
                             <CheckBox
                                 Grid.Row="1"
                                 Margin="0,4,0,0"
                                 Padding="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Content="PNG ( .png )"
-                                IsChecked="{Binding WatchPng}" />
+                                Content="JPEG ( .jpg | .jpeg )"
+                                IsChecked="{Binding WatchJpg}" />
                             <CheckBox
                                 Grid.Row="2"
                                 Margin="0,4,0,0"
                                 Padding="4,0,0,0"
                                 VerticalAlignment="Center"
-                                Content="JPEG ( .jpg | .jpeg )"
-                                IsChecked="{Binding WatchJpg}" />
+                                Content="WEBP ( .webp )"
+                                IsChecked="{Binding WatchWebp}" />
                             <CheckBox
                                 Grid.Row="3"
                                 Margin="0,4,0,0"
@@ -133,7 +133,8 @@
                                 VerticalAlignment="Center"
                                 Content="GIF ( 暂不可用 )"
                                 IsChecked="{Binding WatchGif}"
-                                IsEnabled="False" />
+                                IsEnabled="False"
+                                Visibility="Collapsed" />
                         </Grid>
                     </GroupBox>
                     <GroupBox
@@ -147,11 +148,49 @@
                                 <RowDefinition />
                                 <RowDefinition />
                                 <RowDefinition />
-                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <StackPanel
+                            <RadioButton
                                 Grid.Row="0"
                                 Grid.Column="0"
+                                Margin="0,2,0,0"
+                                Padding="4,0,0,0"
+                                VerticalAlignment="Center"
+                                Content="PNG"
+                                IsChecked="{Binding OutFormat, Converter={StaticResource OutFormatPngToTureCvt}}" />
+                            <StackPanel
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,4,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton
+                                        x:Name="jpegRadioButton"
+                                        Padding="4,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Content="JPEG - 图像质量"
+                                        IsChecked="{Binding OutFormat, Converter={StaticResource OutFormatJpgToTureCvt}}" />
+                                    <TextBox
+                                        MinWidth="30"
+                                        Margin="2,0,0,0"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        IsEnabled="{Binding ElementName=jpegRadioButton, Path=IsChecked}"
+                                        MaxLines="1"
+                                        Text="{Binding Quality, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBlock
+                                        Margin="2,0,0,0"
+                                        VerticalAlignment="Center"
+                                        Text="%" />
+                                </StackPanel>
+                                <TextBlock
+                                    Margin="18,0,0,0"
+                                    FontSize="8pt"
+                                    Foreground="#A0A0A0"
+                                    Text="透明图片转换为 JPEG 会丢失透明度" />
+                            </StackPanel>
+                            <StackPanel
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="0,4,0,0"
                                 VerticalAlignment="Center">
                                 <RadioButton
                                     x:Name="webpRadioButton"
@@ -196,53 +235,15 @@
                                 </StackPanel>
                             </StackPanel>
                             <RadioButton
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="0,4,0,0"
-                                Padding="4,0,0,0"
-                                VerticalAlignment="Center"
-                                Content="PNG"
-                                IsChecked="{Binding OutFormat, Converter={StaticResource OutFormatPngToTureCvt}}" />
-                            <StackPanel
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Margin="0,4,0,0"
-                                Orientation="Horizontal">
-                                <RadioButton
-                                    x:Name="jpegRadioButton"
-                                    Padding="4,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Content="JPEG - 图像质量"
-                                    IsChecked="{Binding OutFormat, Converter={StaticResource OutFormatJpgToTureCvt}}" />
-                                <TextBox
-                                    MinWidth="30"
-                                    Margin="2,0,0,0"
-                                    VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    IsEnabled="{Binding ElementName=jpegRadioButton, Path=IsChecked}"
-                                    MaxLines="1"
-                                    Text="{Binding Quality, UpdateSourceTrigger=LostFocus}" />
-                                <TextBlock
-                                    Margin="2,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Text="%" />
-                            </StackPanel>
-                            <TextBlock
                                 Grid.Row="3"
-                                Grid.Column="0"
-                                Margin="16,0,0,0"
-                                FontSize="8pt"
-                                Foreground="#A0A0A0"
-                                Text="透明图片转换为 JPEG 会丢失透明度" />
-                            <RadioButton
-                                Grid.Row="4"
                                 Grid.Column="0"
                                 Margin="0,4,0,0"
                                 Padding="4,0,0,0"
                                 VerticalAlignment="Center"
                                 Content="GIF (暂不可用)"
                                 IsChecked="{Binding OutFormat, Converter={StaticResource OutFormatGifToTureCvt}}"
-                                IsEnabled="False" />
+                                IsEnabled="False"
+                                Visibility="Collapsed" />
                         </Grid>
                     </GroupBox>
                 </Grid>

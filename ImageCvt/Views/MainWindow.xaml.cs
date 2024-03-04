@@ -17,10 +17,10 @@ namespace ImageCvt
         public MainWindow()
         {
             This = this;
-            this.Loaded += this.MainWindowLoaded;
-            this.Closing += this.MainWindowClosing;
             this.Closed += this.MainWindowClosed;
+            this.Closing += this.MainWindowClosing;
             this.InitializeComponent();
+            this.InitializeNotifyIconAndWatchers();
         }
 
         private void DisplayWndClick(object sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace ImageCvt
             }
         }
 
-        private void MainWindowLoaded(object sender, RoutedEventArgs e)
+        private void InitializeNotifyIconAndWatchers()
         {
             this.SetupNotifyIcon();
             foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)

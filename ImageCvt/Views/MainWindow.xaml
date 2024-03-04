@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     DataContext="{Binding Source={x:Static local:ConfigHelper.Current}, Path=MainModelProxy}"
     Icon="\Images\icon.ico"
+    Visibility="{Binding HideMainWindowOnStartup, Mode=OneTime, Converter={StaticResource BoolToMainWindowVisibilityCvt}}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Title>
@@ -182,6 +183,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <CheckBox
@@ -189,19 +191,26 @@
                 Grid.Column="0"
                 Margin="-1,0,0,0"
                 Padding="4,0,0,0"
-                Content="窗口关闭时最小化到系统托盘"
-                IsChecked="{Binding HideClosingWndToTray}" />
+                Content="启动后自动开始上次未停止的监视任务"
+                IsChecked="{Binding AutoStartTasksNotStopped}" />
             <CheckBox
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="24,0,0,0"
                 Padding="4,0,0,0"
-                Content="软件启动后，自动开启上次退出前未停止的任务"
-                IsChecked="{Binding AutoStartTasksNotStopped}" />
+                Content="启动后不显示主窗口"
+                IsChecked="{Binding HideMainWindowOnStartup}" />
+            <CheckBox
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="24,0,0,0"
+                Padding="4,0,0,0"
+                Content="窗口关闭时最小化到系统托盘"
+                IsChecked="{Binding HideClosingWndToTray}" />
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
-                Grid.ColumnSpan="2"
+                Grid.ColumnSpan="3"
                 Margin="0,4,0,0"
                 VerticalAlignment="Center"
                 Foreground="Gray"

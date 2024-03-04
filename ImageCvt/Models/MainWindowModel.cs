@@ -14,6 +14,7 @@ namespace ImageCvt
         private double editorHeight = 300.0;
         private double logWndWidth = 600.0;
         private double logWndHeight = 700.0;
+        private bool hideMainWindowOnStartup = false;
         private bool autoStartTasksNotStopped = false;
         private bool hideToTrayWhenWindowClosed = true;
         private FileWatcherModel selectedWatcher;
@@ -59,6 +60,12 @@ namespace ImageCvt
         {
             get => this.logWndHeight;
             set => this.SetPropNotify(ref this.logWndHeight, value);
+        }
+
+        public bool HideMainWindowOnStartup
+        {
+            get => this.hideMainWindowOnStartup;
+            set => this.SetPropNotify(ref this.hideMainWindowOnStartup, value);
         }
 
         public bool HideClosingWndToTray
