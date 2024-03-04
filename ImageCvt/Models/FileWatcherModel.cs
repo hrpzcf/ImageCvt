@@ -677,7 +677,7 @@ namespace ImageCvt
                 MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 // 对 ProcessedPictures 的操作都在主线程，不用加锁
-                foreach (ParamPackage package in this.ProcessedPictures.Where(i => i.Result))
+                foreach (var package in this.ProcessedPictures.Where(i => i.Result && !i.InFileDeleted))
                 {
                     try
                     {
