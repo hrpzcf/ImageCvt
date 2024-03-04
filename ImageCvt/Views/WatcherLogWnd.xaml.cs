@@ -6,6 +6,7 @@ namespace ImageCvt
     {
         public WatcherLogWnd(FileWatcherModel model)
         {
+            model.HostWindow = this;
             this.DataContext = model;
             this.InitializeComponent();
         }

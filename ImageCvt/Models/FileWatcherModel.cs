@@ -43,6 +43,11 @@ namespace ImageCvt
         private RelayCommand selectOutputDirCmd;
         private RelayCommand clearLogItemsCmd;
         private RelayCommand deleteConvertedFilesCmd;
+        private RelayCommand openInFileLocationCmd;
+        private RelayCommand openOutFileLocationCmd;
+        private RelayCommand deleteInFileCmd;
+        private RelayCommand deleteOutFileCmd;
+        private RelayCommand deleteConvertionLogCmd;
 
         private readonly List<string> excludedFileFullPaths = new List<string>();
 
@@ -52,15 +57,18 @@ namespace ImageCvt
 
         public FileWatcherModel()
         {
-            this.watcher.IncludeSubdirectories = true;
             this.watcher.Error += new ErrorEventHandler(this.WatcherError);
             this.watcher.Created += new FileSystemEventHandler(this.OnFileCreated);
             this.watcher.Renamed += new RenamedEventHandler(this.OnFileRenamed);
             this.watcher.Changed += new FileSystemEventHandler(this.OnFileChanged);
+            this.watcher.IncludeSubdirectories = true;
             this.watcher.NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite;
             this.packagesForTimer = new List<ParamPackage>();
             this.filesChangedTimer = new Timer(this.ChangedOrRenamedProc);
         }
+
+        [XmlIgnore]
+        public Window HostWindow { get; set; }
 
         [XmlIgnore]
         public bool IsEnabled
@@ -228,6 +236,24 @@ namespace ImageCvt
             {
                 return default(bool);
             }
+        }
+
+        private static bool OpenFolderAndSelectItem(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !Path.IsPathRooted(path))
+            {
+                return false;
+            }
+            path = path.Replace("/", "\\");
+            SHELL32.SHParseDisplayName(
+                path, IntPtr.Zero, out IntPtr nativePath, 0U, out _);
+            if (nativePath == IntPtr.Zero)
+            {
+                return false;
+            }
+            int intResult = SHELL32.SHOpenFolderAndSelectItems(nativePath, 0U, null, 0U);
+            Marshal.FreeCoTaskMem(nativePath);
+            return 0 == intResult;
         }
 
         private void ChangedOrRenamedProc(object state)
@@ -455,7 +481,7 @@ namespace ImageCvt
                                     try
                                     {
                                         File.Delete(param.FullPath);
-                                        param.OriginFileDeleted = true;
+                                        param.InFileDeleted = true;
                                     }
                                     catch (Exception) { }
                                 }
@@ -636,7 +662,7 @@ namespace ImageCvt
                     try
                     {
                         File.Delete(package.FullPath);
-                        package.OriginFileDeleted = true;
+                        package.InFileDeleted = true;
                     }
                     catch (Exception)
                     {
@@ -657,6 +683,135 @@ namespace ImageCvt
                     this.deleteConvertedFilesCmd = new RelayCommand(this.DeleteConvertedFilesAction);
                 }
                 return this.deleteConvertedFilesCmd;
+            }
+        }
+
+        private void OpenInFileLocationAction(object param)
+        {
+            if (this.SelectedParamPackage != null)
+            {
+                OpenFolderAndSelectItem(this.SelectedParamPackage.FullPath);
+            }
+        }
+
+        [XmlIgnore]
+        public ICommand OpenInFileLocationCmd
+        {
+            get
+            {
+                if (this.openInFileLocationCmd == null)
+                {
+                    this.openInFileLocationCmd = new RelayCommand(this.OpenInFileLocationAction);
+                }
+                return this.openInFileLocationCmd;
+            }
+        }
+
+        private void OpenOutFileLocationAction(object param)
+        {
+            if (this.SelectedParamPackage != null)
+            {
+                OpenFolderAndSelectItem(this.SelectedParamPackage.NewFullPath);
+            }
+        }
+
+        [XmlIgnore]
+        public ICommand OpenOutFileLocationCmd
+        {
+            get
+            {
+                if (this.openOutFileLocationCmd == null)
+                {
+                    this.openOutFileLocationCmd = new RelayCommand(this.OpenOutFileLocationAction);
+                }
+                return this.openOutFileLocationCmd;
+            }
+        }
+
+        private void DeleteInFileAction(object param)
+        {
+            if (this.SelectedParamPackage != null &&
+                MessageBox.Show(this.HostWindow,
+                $"确定要删除所选记录的【原文件】吗？\n{this.SelectedParamPackage.FullPath}", "提示",
+                MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                try
+                {
+                    File.Delete(this.SelectedParamPackage.FullPath);
+                    this.SelectedParamPackage.InFileDeleted = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this.HostWindow, $"文件删除失败：\n{ex.Message}", "提示", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public ICommand DeleteInFileCmd
+        {
+            get
+            {
+                if (this.deleteInFileCmd == null)
+                {
+                    this.deleteInFileCmd = new RelayCommand(this.DeleteInFileAction);
+                }
+                return this.deleteInFileCmd;
+            }
+        }
+
+        private void DeleteOutFileAction(object param)
+        {
+            if (this.SelectedParamPackage != null &&
+                MessageBox.Show(this.HostWindow,
+                $"确定要删除所选记录的【新文件】吗？\n{this.SelectedParamPackage.NewFullPath}", "提示",
+                MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                try
+                {
+                    File.Delete(this.SelectedParamPackage.NewFullPath);
+                    this.SelectedParamPackage.OutFileDeleted = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this.HostWindow, $"文件删除失败：\n{ex.Message}", "提示", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+        }
+
+        [XmlIgnore]
+        public ICommand DeleteOutFileCmd
+        {
+            get
+            {
+                if (this.deleteOutFileCmd == null)
+                {
+                    this.deleteOutFileCmd = new RelayCommand(this.DeleteOutFileAction);
+                }
+                return this.deleteOutFileCmd;
+            }
+        }
+
+        private void DeleteConvertionLogAction(object param)
+        {
+            if (this.SelectedParamPackage != null)
+            {
+                this.ProcessedPictures.Remove(this.SelectedParamPackage);
+            }
+        }
+
+        [XmlIgnore]
+        public ICommand DeleteConvertionLogCmd
+        {
+            get
+            {
+                if (this.deleteConvertionLogCmd == null)
+                {
+                    this.deleteConvertionLogCmd = new RelayCommand(this.DeleteConvertionLogAction);
+                }
+                return this.deleteConvertionLogCmd;
             }
         }
     }

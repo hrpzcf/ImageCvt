@@ -34,6 +34,17 @@
             SelectedItem="{Binding SelectedParamPackage}"
             SelectionMode="Single"
             VerticalGridLinesBrush="#FF969696">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding OpenInFileLocationCmd}" Header="打开原文件位置" />
+                    <MenuItem Command="{Binding OpenOutFileLocationCmd}" Header="打开新文件位置" />
+                    <Separator />
+                    <MenuItem Command="{Binding DeleteInFileCmd}" Header="删除原文件" />
+                    <MenuItem Command="{Binding DeleteOutFileCmd}" Header="删除新文件" />
+                    <Separator />
+                    <MenuItem Command="{Binding DeleteConvertionLogCmd}" Header="删除所选转换记录" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="时间">
                     <DataGridTemplateColumn.CellTemplate>
@@ -64,7 +75,7 @@
                                     Grid.Column="1"
                                     Margin="0,0,0,0"
                                     Text="{Binding FullPath}"
-                                    TextDecorations="{Binding OriginFileDeleted, Converter={StaticResource BoolToTextBlockStrikeThroughCvt}}" />
+                                    TextDecorations="{Binding InFileDeleted, Converter={StaticResource BoolToTextBlockStrikeThroughCvt}}" />
                                 <TextBlock
                                     Grid.Row="1"
                                     Grid.Column="0"
@@ -74,7 +85,8 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,2,0,0"
-                                    Text="{Binding NewFullPath}" />
+                                    Text="{Binding NewFullPath}"
+                                    TextDecorations="{Binding OutFileDeleted, Converter={StaticResource BoolToTextBlockStrikeThroughCvt}}" />
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

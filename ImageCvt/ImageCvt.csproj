@@ -65,6 +65,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\GenericItemModel.cs" />
     <Compile Include="Others\Enumerations.cs" />
+    <Compile Include="Others\NativeMethods.cs" />
     <Compile Include="Views\WatcherLogWnd.xaml.cs">
       <DependentUpon>WatcherLogWnd.xaml</DependentUpon>
     </Compile>

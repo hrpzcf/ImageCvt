@@ -4,7 +4,8 @@ namespace ImageCvt
 {
     public class ParamPackage : NotifiableModelBase
     {
-        private bool originFileDeleted = false;
+        private bool inFileDeleted = false;
+        private bool outFileDeleted = false;
 
         public ParamPackage(string name, string fullPath)
         {
@@ -16,10 +17,16 @@ namespace ImageCvt
 
         public string FullPath { get; set; }
 
-        public bool OriginFileDeleted
+        public bool InFileDeleted
         {
-            get => this.originFileDeleted;
-            set => this.SetPropNotify(ref this.originFileDeleted, value);
+            get => this.inFileDeleted;
+            set => this.SetPropNotify(ref this.inFileDeleted, value);
+        }
+
+        public bool OutFileDeleted
+        {
+            get => this.outFileDeleted;
+            set => this.SetPropNotify(ref this.outFileDeleted, value);
         }
 
         public string TargetDir { get; set; }
