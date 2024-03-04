@@ -31,6 +31,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -247,13 +248,20 @@
                         </Grid>
                     </GroupBox>
                 </Grid>
-                <TextBlock
+                <CheckBox
                     Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="0,8,0,0"
+                    Padding="4,0,0,0"
+                    Content="格式转换成功后自动删除原文件"
+                    IsChecked="{Binding AutoDeleteOriginOnSucceeded}" />
+                <TextBlock
+                    Grid.Row="6"
                     Grid.Column="0"
                     Margin="0,8,0,0"
                     Text="备注：" />
                 <TextBox
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Margin="0,2,0,0"

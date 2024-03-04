@@ -23,6 +23,7 @@ namespace ImageCvt
         private int quality = 80;
         private FileFmt outFormat = FileFmt.JPG;
         private CompMode compLevel = CompMode.Quality;
+        private bool autoDeleteOriginOnSucceeded = false;
         private bool watchJpg = false;
         private bool watchPng = false;
         private bool watchWebp = true;
@@ -167,6 +168,12 @@ namespace ImageCvt
 
         public bool NotStoppedBeforeExiting { get; set; }
 
+        public bool AutoDeleteOriginOnSucceeded
+        {
+            get => this.autoDeleteOriginOnSucceeded;
+            set => this.SetPropNotify(ref this.autoDeleteOriginOnSucceeded, value);
+        }
+
         [XmlIgnore]
         public ParamPackage SelectedParamPackage
         {
@@ -196,6 +203,7 @@ namespace ImageCvt
                 OutFormat = this.OutFormat,
                 CompLevel = this.CompLevel,
                 ProcessedPictures = this.ProcessedPictures,
+                AutoDeleteOriginOnSucceeded = this.AutoDeleteOriginOnSucceeded,
                 IsEnabled = false,
             };
         }
@@ -236,6 +244,7 @@ namespace ImageCvt
                         package.Quality = this.Quality;
                         package.OutFormat = this.OutFormat;
                         package.CompLevel = this.CompLevel;
+                        package.AutoDeleteOriginOnSucceeded = this.AutoDeleteOriginOnSucceeded;
                         bool matchedExtension = false;
                         if (this.WatchJpg && (
                             ext.Equals(".jpg", StringComparison.OrdinalIgnoreCase) ||
@@ -436,15 +445,24 @@ namespace ImageCvt
                     {
                         bool succeeded = this.ConvertToFormat(param);
                         param.FinishTime = DateTime.Now;
-                        void AddProcessed()
+                        void AddProcessedPicture()
                         {
                             this.ProcessedPictures.Add(param);
                             if (succeeded)
                             {
+                                if (param.AutoDeleteOriginOnSucceeded && File.Exists(param.FullPath))
+                                {
+                                    try
+                                    {
+                                        File.Delete(param.FullPath);
+                                        param.OriginFileDeleted = true;
+                                    }
+                                    catch (Exception) { }
+                                }
                                 ++this.SucceededCount;
                             }
                         };
-                        Application.Current.Dispatcher.Invoke(AddProcessed);
+                        Application.Current.Dispatcher.Invoke(AddProcessedPicture);
                     }
                 }
                 catch (ObjectDisposedException)
@@ -609,8 +627,8 @@ namespace ImageCvt
 
         private void DeleteConvertedFilesAction(object param)
         {
-            if (MessageBox.Show(MainWindow.This, "确定要删除所有已经转换成功的 .webp 原文件吗？",
-                "提示", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show(MainWindow.This, "确定要删除所有已经转换成功的原文件吗？", "提示",
+                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 // 对 ProcessedPictures 的操作都在主线程，不用加锁
                 foreach (ParamPackage package in this.ProcessedPictures.Where(i => i.Result))

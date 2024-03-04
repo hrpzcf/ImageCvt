@@ -40,8 +40,10 @@ namespace ImageCvt
 
         public bool Result { get; set; }
 
-        public string ReasonForFailure { get; set; }
-
         public DateTime FinishTime { get; set; }
+
+        public bool AutoDeleteOriginOnSucceeded { get; set; }
+
+        public string ReasonForFailure { get; set; }
     }
 }
