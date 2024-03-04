@@ -8,7 +8,7 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("ImageCvt")]
-[assembly: AssemblyDescription("监视目录并自动把目录里新增或被重命名为目标格式的图像转换为指定格式")]
+[assembly: AssemblyDescription("监视目录并自动把目录里新增或被重命名为目标格式的图像转换为指定格式的图像")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("hrpzcf")]
 [assembly: AssemblyProduct("ImageCvt")]
