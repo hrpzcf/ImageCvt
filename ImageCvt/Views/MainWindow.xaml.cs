@@ -23,7 +23,7 @@ namespace ImageCvt
             this.InitializeNotifyIconAndWatchers();
         }
 
-        private void DisplayWndClick(object sender, EventArgs e)
+        private void DisplayWindowClick(object sender, EventArgs e)
         {
             if (!this.IsVisible)
             {
@@ -39,6 +39,28 @@ namespace ImageCvt
             }
         }
 
+        private void EnableWatchersClick(object sender, EventArgs e)
+        {
+            foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)
+            {
+                if (!model.IsEnabled)
+                {
+                    model.EnableWatcher(true);
+                }
+            }
+        }
+
+        private void DisableWatchersClick(object sender, EventArgs e)
+        {
+            foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)
+            {
+                if (model.IsEnabled)
+                {
+                    model.EnableWatcher(false);
+                }
+            }
+        }
+
         private void ExitApplicationClick(object sender, EventArgs e)
         {
             this.closeByTrayMenu = true;
@@ -48,19 +70,35 @@ namespace ImageCvt
         private void SetupNotifyIcon()
         {
             this.trayIcon = new Forms.NotifyIcon();
-            this.trayIcon.DoubleClick += this.DisplayWndClick;
+            this.trayIcon.DoubleClick += this.DisplayWindowClick;
             this.trayIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
             this.trayIcon.Text = "ImageCvt";
-            Forms.ToolStripMenuItem displayWnd = new Forms.ToolStripMenuItem();
-            displayWnd.Text = "显示窗口";
-            displayWnd.Click += this.DisplayWndClick;
-            Forms.ToolStripMenuItem exitApplication = new Forms.ToolStripMenuItem();
-            exitApplication.Text = "退出";
+
+            var displayWindow = new Forms.ToolStripMenuItem();
+            displayWindow.Text = "显示窗口";
+            displayWindow.Click += this.DisplayWindowClick;
+            this.trayIcon.ContextMenuStrip.Items.Add(displayWindow);
+            this.trayIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripSeparator());
+
+            var enableWatchers = new Forms.ToolStripMenuItem();
+            enableWatchers.Text = "启动所有任务";
+            enableWatchers.Click += this.EnableWatchersClick;
+            this.trayIcon.ContextMenuStrip.Items.Add(enableWatchers);
+            this.trayIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripSeparator());
+
+            var disableWatchers = new Forms.ToolStripMenuItem();
+            disableWatchers.Text = "停止所有任务";
+            disableWatchers.Click += this.DisableWatchersClick;
+            this.trayIcon.ContextMenuStrip.Items.Add(disableWatchers);
+            this.trayIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripSeparator());
+
+            var exitApplication = new Forms.ToolStripMenuItem();
+            exitApplication.Text = "退出软件";
             exitApplication.Click += this.ExitApplicationClick;
-            this.trayIcon.ContextMenuStrip.Items.Add(displayWnd);
             this.trayIcon.ContextMenuStrip.Items.Add(exitApplication);
-            StreamResourceInfo streamInfo =
-                Application.GetResourceStream(new Uri(@"\Images\icon.ico", UriKind.Relative));
+
+            StreamResourceInfo streamInfo = Application.GetResourceStream(
+                new Uri(@"\Images\icon.ico", UriKind.Relative));
             using (streamInfo.Stream)
             {
                 this.trayIcon.Icon = new Icon(streamInfo.Stream);
