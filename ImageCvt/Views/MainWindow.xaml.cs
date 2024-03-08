@@ -10,7 +10,7 @@ namespace ImageCvt
     public partial class MainWindow : Window
     {
         private Forms.NotifyIcon trayIcon;
-        private bool closeByTrayMenu = false;
+        private bool closeImmediately = false;
 
         public static MainWindow This { get; private set; }
 
@@ -19,6 +19,7 @@ namespace ImageCvt
             This = this;
             this.Closed += this.MainWindowClosed;
             this.Closing += this.MainWindowClosing;
+            Application.Current.SessionEnding += this.ApplicationSessionEnding;
             this.InitializeComponent();
             this.InitializeNotifyIconAndWatchers();
         }
@@ -63,7 +64,7 @@ namespace ImageCvt
 
         private void ExitApplicationClick(object sender, EventArgs e)
         {
-            this.closeByTrayMenu = true;
+            this.closeImmediately = true;
             this.Close();
         }
 
@@ -111,9 +112,8 @@ namespace ImageCvt
             this.trayIcon?.Dispose();
         }
 
-        private void MainWindowClosed(object sender, EventArgs e)
+        private void Finalization()
         {
-            this.RemoveNotifyIcon();
             foreach (FileWatcherModel model in ConfigHelper.Current.MainModelProxy.Watchers)
             {
                 model.NotStoppedBeforeExiting = model.IsEnabled;
@@ -122,9 +122,22 @@ namespace ImageCvt
             }
         }
 
+        private void ApplicationSessionEnding(object sender, SessionEndingCancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Finalization();
+            ConfigHelper.SaveConfig();
+        }
+
+        private void MainWindowClosed(object sender, EventArgs e)
+        {
+            this.Finalization();
+            this.RemoveNotifyIcon();
+        }
+
         private void MainWindowClosing(object sender, CancelEventArgs e)
         {
-            if (!this.closeByTrayMenu && ConfigHelper.Current.MainModelProxy.HideClosingWndToTray)
+            if (!this.closeImmediately && ConfigHelper.Current.MainModelProxy.HideClosingWndToTray)
             {
                 this.Hide();
                 e.Cancel = true;
